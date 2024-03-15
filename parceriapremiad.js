@@ -197,14 +197,14 @@ $(document).ready(function () {
 
         if(!idcodigo.includes("noticia"))
             {
-             respostacodigo = $('#codigopontuacao' + idcodigo);
+             respostacodigo = $('#codigopontuacao' + idcodigo).val();
             } else
             
             {
                 respostacodigo = 0;
             }
 
-        var codigo = "3";
+        var codigo = respostacodigo;
         const linkunico = window.location.href;
 
 
