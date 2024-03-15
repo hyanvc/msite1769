@@ -1,16 +1,14 @@
-async function finalizar(cpf, linkunico) {
+async function finalizarComQuiz(cpf, linkunico,codigo) {
     await setupToken();
+    debugger;
     if (await checkLINKUNICO(cpf, linkunico)) {
         let eventoValor;
-        var eventoid = document.getElementById("Evento-Parceria");
-        var evento = eventoid.value;
-
-        if (evento.includes("Notícias")) {
-            eventoValor = 19;
-        } else if (evento.includes("Mercado em foco")) {
-            eventoValor = 20;
-        } else if (evento.includes("TV Capef")) {
-            eventoValor = 18;
+        debugger;
+        var evento = codigo;
+        if (evento == 21) {
+            eventoValor = 21;
+        } else if (evento == 16) {
+            eventoValor = 16;
         }
         if (eventoValor) {
 
@@ -23,13 +21,14 @@ async function finalizar(cpf, linkunico) {
 
 }
 
+
+
 async function validarPontuar(cpf) {
     return await checkCPF(cpf);
 
 }
 
 const urlAPI = "https://ici002.capef.com.br/apiparceriapremiada"; //homolog
-//const urlAPI = "https://localhost:7031";
 const authUserName = "Hero99";
 const authPassword = "d7OwsEqTXc";
 
@@ -56,6 +55,7 @@ async function setupToken() {
 
 async function authFetch(url, options = {}) {
     try {
+        debugger;
         let token = localStorage.getItem('authToken');
         const headers = {
             ...options.headers,
@@ -114,10 +114,17 @@ const apiparceria = authFetch;
 async function checkCPF(cpf) {
     const response = await apiparceria(`${urlAPI}/CPF/${cpf}`);
     const data = await response;
-    return data.id !== null && data.id !== undefined;
+    var valido = data.id !== null && data.id !== undefined;
+    if(!valido)
+    {
+        $('.w-form-done').toggleClass('w-form-done w-form-fail').text("CPF não cadastrado no Programa.");
+
+    }
+    return valido;
 }
 
 async function checkLINKUNICO(cpf, linkunico) {
+    debugger;
     const body = {
         "CPF": cpf,
         "linkunico": linkunico
@@ -129,13 +136,14 @@ async function checkLINKUNICO(cpf, linkunico) {
     });
     const data = await response;
     if (data.status == 400) {
-        console.log("cpf ja pontuou neste link!");
+        $('.w-form-done').toggleClass('w-form-done w-form-fail').text("Você já pontuou neste conteúdo.");
     } else {
         return data.id !== null && data.id !== undefined;
     }
 }
 
 async function pontuarCPF(cpf, evento, linkunico) {
+    debugger;
     const pontosJson = {
         "CPF": cpf,
         "EventoId": evento,
@@ -147,67 +155,28 @@ async function pontuarCPF(cpf, evento, linkunico) {
     });
 
     if (response.chamadoPontuacaoId) {
-        console.log("Pontuação adicionada com sucesso!");
+        $('.w-form-done').text("Seus pontos foram creditados com sucesso!");
     } else {
         console.error("Erro ao adicionar pontuação:", response.statusText);
     }
 }
 
 $(document).ready(function () {
-    var eventoid = document.getElementById("Evento-Parceria");
-    let iddobotao;
-    var evento = eventoid.value;
-    if (evento.includes("Notícias")) {
-        iddobotao = "btnparceria-noticias";
-    } else if (evento.includes("Mercado em foco")) {
-        iddobotao = "btnparceria-mef";
-    } else if (evento.includes("TV Capef")) {
-        iddobotao = "btnparceria-tvcapef";
-    }
 
-    $('#' + iddobotao).click(function () {
-        let idcodigo;
-        var evento = eventoid.value;
-        if (evento.includes("Notícias")) {
-            idcodigo = "-noticias";
-        } else if (evento.includes("Mercado em foco")) {
-            idcodigo = "-mef";
-        } else if (evento.includes("TV Capef")) {
-            idcodigo = "-tvcapef";
-        }
 
-        var iddocodigo = "C-digo-do-conte-do-3" + idcodigo;
-        var inputElement = $('#' + iddocodigo);
-        var inputCpf = $('#cpf-parceria' + idcodigo);;
+    $('.button-parceria').click(function () {       
+        var inputCpf = $('#cpf-parceria');;
 
         var valorCpf = inputCpf.val();
         var cpf = valorCpf;
-        if (inputElement.length > 0) {
-            var codigodigitado = inputElement.val();
-        }
 
-        var codigo = "5656"; // código que vai estar oculto
+        debugger;
+        var quiz = true;
         const linkunico = window.location.href;
 
-
-        if (codigodigitado != null && codigodigitado != "") {
-            if (codigodigitado != null && codigodigitado != "") {
-                if (codigo === codigodigitado) {
-                    finalizar(cpf, linkunico);
-                }
-            } else { }
-        } else {
-            if(!idcodigo.includes("noticia"))
-            {
-                if (inputElement.length > 0) {
-                    finalizar(cpf, linkunico);
-                }
-            } else
-            {
-                finalizar(cpf, linkunico);
-
-            }
-           
+        var CODIGO = 21  //AQUI TU ALTERA VAI SER A VARIAVEL ////////////////////////////////
+        if (quiz) {
+            finalizarComQuiz(cpf, linkunico,CODIGO)
         }
     });
 });
