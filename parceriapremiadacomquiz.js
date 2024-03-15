@@ -20,18 +20,13 @@ async function finalizarComQuiz(cpf, linkunico,codigo) {
     }
 
 }
-
-
-
 async function validarPontuar(cpf) {
     return await checkCPF(cpf);
 
 }
-
 const urlAPI = "https://ici002.capef.com.br/apiparceriapremiada"; //homolog
 const authUserName = "Hero99";
 const authPassword = "d7OwsEqTXc";
-
 async function setupToken() {
     const authResponse = await fetch(`${urlAPI}/auth/access-token`, {
         method: "POST",
@@ -52,7 +47,6 @@ async function setupToken() {
     token = authData.access_Token;
     localStorage.setItem('authToken', token);
 }
-
 async function authFetch(url, options = {}) {
     try {
         debugger;
@@ -108,9 +102,7 @@ async function authFetch(url, options = {}) {
         return error
     }
 }
-
 const apiparceria = authFetch;
-
 async function checkCPF(cpf) {
     const response = await apiparceria(`${urlAPI}/CPF/${cpf}`);
     const data = await response;
@@ -122,7 +114,6 @@ async function checkCPF(cpf) {
     }
     return valido;
 }
-
 async function checkLINKUNICO(cpf, linkunico) {
     debugger;
     const body = {
@@ -141,7 +132,6 @@ async function checkLINKUNICO(cpf, linkunico) {
         return data.id !== null && data.id !== undefined;
     }
 }
-
 async function pontuarCPF(cpf, evento, linkunico) {
     debugger;
     const pontosJson = {
@@ -160,10 +150,7 @@ async function pontuarCPF(cpf, evento, linkunico) {
         console.error("Erro ao adicionar pontuação:", response.statusText);
     }
 }
-
 $(document).ready(function () {
-
-
     $('.button-parceria').click(function () {       
         var inputCpf = $('#cpf-parceria');;
 
