@@ -161,7 +161,7 @@ $(document).ready(function () {
         var quiz = true;
         const linkunico = window.location.href;
 
-        var CODIGO = 21  //AQUI TU ALTERA VAI SER A VARIAVEL ////////////////////////////////
+        var CODIGO = 21 //variavel aqui 
         if (quiz) {
             finalizarComQuiz(cpf, linkunico,CODIGO)
         }
