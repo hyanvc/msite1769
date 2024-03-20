@@ -162,6 +162,7 @@ async function pontuarCPF(cpf, evento, linkunico) {
 $(document).ready(function () {
     var eventoid = document.getElementById("Evento-Parceria");
     let iddobotao;
+    let contemcodigo = false;
     var evento = eventoid.value;
     if (evento.includes("Notícias")) {
         iddobotao = "btnparceria-noticias";
@@ -198,6 +199,7 @@ $(document).ready(function () {
         if(!idcodigo.includes("noticia"))
             {
              respostacodigo = $('#codigopontuacao' + idcodigo).val();
+             contemcodigo = true;
             } else
             
             {
@@ -206,6 +208,15 @@ $(document).ready(function () {
 
         var codigo = respostacodigo;
         const linkunico = window.location.href;
+
+        if(contemcodigo)
+        {
+            if(codigo != codigodigitado)
+            {
+                $('.w-form-done').toggleClass('w-form-done w-form-fail').text("Código inválido para o vídeo");
+
+            }
+        }
 
 
         if (codigodigitado != null && codigodigitado != "") {
