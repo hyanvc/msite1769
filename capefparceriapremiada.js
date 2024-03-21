@@ -28,10 +28,7 @@ async function validarPontuar(cpf) {
 
 }
 
-// const urlAPI = "https://ici002.capef.com.br/apiparceriapremiada"; //homolog
 const urlAPI = "https://apiparceriapremiada.capef.com.br"; //producao
-
-//const urlAPI = "https://localhost:7031";
 const authUserName = "Hero99";
 const authPassword = "d7OwsEqTXc";
 
@@ -175,7 +172,6 @@ $(document).ready(function () {
     }
 
     $('#' + iddobotao).click(function () {
-        debugger;
 
         let idcodigo;
         var evento = eventoid.value;
@@ -197,7 +193,6 @@ $(document).ready(function () {
             var codigodigitado = inputElement.val();
         }
         let respostacodigo;
-
         if(!idcodigo.includes("noticia"))
             {
              respostacodigo = $('#codigopontuacao' + idcodigo).val();
@@ -215,7 +210,8 @@ $(document).ready(function () {
         {
             if(codigo != codigodigitado)
             {
-                $('.w-form-done').toggleClass('w-form-done w-form-fail').text("Código inválido para o vídeo");
+                $('.w-form-done').toggleClass('w-form-done w-form-fail').text("Código inválido para o vídeo.");
+                return;
 
             }
         }

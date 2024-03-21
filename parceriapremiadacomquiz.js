@@ -24,7 +24,7 @@ async function validarPontuar(cpf) {
     return await checkCPF(cpf);
 
 }
-const urlAPI = "https://ici002.capef.com.br/apiparceriapremiada"; //homolog
+const urlAPI = "https://apiparceriapremiada.capef.com.br"; //producao
 const authUserName = "Hero99";
 const authPassword = "d7OwsEqTXc";
 async function setupToken() {
