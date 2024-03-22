@@ -1,8 +1,7 @@
 async function finalizarComQuiz(cpf, linkunico,codigo) {
     await setupToken();
     if (await checkLINKUNICO(cpf, linkunico)) {
-        let eventoValor;
-        
+        let eventoValor;       
         var evento = codigo;
         if (evento == 21) {
             eventoValor = 21;
@@ -151,7 +150,6 @@ $(document).ready(function () {
         var inputCpf = $('#cpf-parceria');
         var valorCpf = inputCpf.val();
         var cpf = valorCpf;
-         debugger;
         var quiz = true;
         const linkunico = window.location.href;
 
