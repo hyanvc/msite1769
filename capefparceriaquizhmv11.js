@@ -104,11 +104,15 @@ const apiparceria = authFetch;
 async function checkCPF(cpf) {
     const response = await apiparceria(`${urlAPI}/CPF/${cpf}`);
     const data = await response;
-    var valido = data.id !== null && data.id !== undefined;
-    if(!valido)
-    {
-        $('.w-form-done').toggleClass('w-form-done w-form-fail').text("CPF não cadastrado no Programa.");
 
+    if (data.id === "NaoEParticipante") {
+        $('.w-form-done').toggleClass('w-form-done w-form-fail').text("CPF não habilitado para o programa.");
+        return false;
+    }
+
+    const valido = data.id !== null && data.id !== undefined;
+    if (!valido) {
+        $('.w-form-done').toggleClass('w-form-done w-form-fail').text("CPF não cadastrado no Programa.");
     }
     return valido;
 }
