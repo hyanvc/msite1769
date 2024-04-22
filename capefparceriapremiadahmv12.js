@@ -1,5 +1,5 @@
 async function finalizar(cpf, linkunico) {
-    await setupToken();
+    await setupTokenParceria();
     if (await checkLINKUNICO(cpf, linkunico)) {
         let eventoValor;
         var eventoid = document.getElementById("Evento-Parceria");
@@ -24,7 +24,7 @@ async function finalizar(cpf, linkunico) {
 }
 
 async function validarPontuar(cpf) {
-    return await checkCPF(cpf);
+    return await checkCPFParceria(cpf);
 
 }
 
@@ -33,7 +33,7 @@ const urlAPI = "https://ici002.capef.com.br/apiparceriapremiada"; //homolog
 const authUserName = "Hero99";
 const authPassword = "d7OwsEqTXc";
 
-async function setupToken() {
+async function setupTokenParceria() {
     const authResponse = await fetch(`${urlAPI}/auth/access-token`, {
         method: "POST",
         body: JSON.stringify({
@@ -51,12 +51,12 @@ async function setupToken() {
 
     const authData = await authResponse.json();
     token = authData.access_Token;
-    localStorage.setItem('authToken', token);
+    localStorage.setItem('authTokenparceria', token);
 }
 
-async function authFetch(url, options = {}) {
+async function authFetchParceria(url, options = {}) {
     try {
-        let token = localStorage.getItem('authToken');
+        let token = localStorage.getItem('authTokenparceria');
         const headers = {
             ...options.headers,
             "Authorization": `Bearer ${token}`,
@@ -68,8 +68,8 @@ async function authFetch(url, options = {}) {
         });
 
         if (dataResponse.status === 401) {
-            localStorage.removeItem("authToken");
-            await setupToken();
+            localStorage.removeItem("authTokenparceria");
+            await setupTokenParceria();
         }
 
         if (dataResponse.status === 400) {
@@ -109,9 +109,9 @@ async function authFetch(url, options = {}) {
     }
 }
 
-const apiparceria = authFetch;
+const apiparceria = authFetchParceria;
 
-async function checkCPF(cpf) {
+async function checkCPFParceria(cpf) {
     const response = await apiparceria(`${urlAPI}/CPF/${cpf}`);
     const data = await response;
 
@@ -133,7 +133,7 @@ async function checkLINKUNICO(cpf, linkunico) {
         "CPF": cpf,
         "linkunico": linkunico
     }
-
+       debugger;
     const response = await apiparceria(`${urlAPI}/CPF/verificarlink`, {
         method: "POST",
         body: JSON.stringify(body)
@@ -193,9 +193,9 @@ $(document).ready(function () {
         var iddocodigo = "C-digo-do-conte-do-3" + idcodigo;
         var inputElement = $('#' + iddocodigo);
         var inputCpf = $('#cpf-parceria' + idcodigo);
-
+       debugger;
         var valorCpf = inputCpf.val();
-        var cpf = valorCpf;
+        var cpf = valorCpf.replace(/\D/g, '');
         if (inputElement.length > 0) {
             var codigodigitado = inputElement.val();
         }

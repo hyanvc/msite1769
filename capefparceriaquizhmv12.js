@@ -1,5 +1,5 @@
 async function finalizarComQuiz(cpf, linkunico,codigo) {
-    await setupToken();
+    await setupTokenParceria();
     if (await checkLINKUNICO(cpf, linkunico)) {
         let eventoValor;       
         var evento = codigo;
@@ -19,14 +19,14 @@ async function finalizarComQuiz(cpf, linkunico,codigo) {
 
 }
 async function validarPontuar(cpf) {
-    return await checkCPF(cpf);
+    return await checkCPFParceria(cpf);
 
 }
 // const urlAPI = "https://apiparceriapremiada.capef.com.br"; //producao
 const urlAPI = "https://ici002.capef.com.br/apiparceriapremiada"; //homolog
 const authUserName = "Hero99";
 const authPassword = "d7OwsEqTXc";
-async function setupToken() {
+async function setupTokenParceria() {
     const authResponse = await fetch(`${urlAPI}/auth/access-token`, {
         method: "POST",
         body: JSON.stringify({
@@ -44,11 +44,11 @@ async function setupToken() {
 
     const authData = await authResponse.json();
     token = authData.access_Token;
-    localStorage.setItem('authToken', token);
+    localStorage.setItem('authTokenParceria', token);
 }
-async function authFetch(url, options = {}) {
+async function authFetchParceria(url, options = {}) {
     try {
-        let token = localStorage.getItem('authToken');
+        let token = localStorage.getItem('authTokenParceria');
         const headers = {
             ...options.headers,
             "Authorization": `Bearer ${token}`,
@@ -60,8 +60,8 @@ async function authFetch(url, options = {}) {
         });
 
         if (dataResponse.status === 401) {
-            localStorage.removeItem("authToken");
-            await setupToken();
+            localStorage.removeItem("authTokenParceria");
+            await setupTokenParceria();
         }
 
         if (dataResponse.status === 400) {
@@ -100,8 +100,8 @@ async function authFetch(url, options = {}) {
         return error
     }
 }
-const apiparceria = authFetch;
-async function checkCPF(cpf) {
+const apiparceria = authFetchParceria;
+async function checkCPFParceria(cpf) {
     const response = await apiparceria(`${urlAPI}/CPF/${cpf}`);
     const data = await response;
 
@@ -154,7 +154,7 @@ $(document).ready(function () {
     $('.button-parceria').click(function () {       
         var inputCpf = $('#cpf-parceria');
         var valorCpf = inputCpf.val();
-        var cpf = valorCpf;
+        var cpf = valorCpf.replace(/\D/g, '');;
         var quiz = true;
         const linkunico = window.location.href;
 
